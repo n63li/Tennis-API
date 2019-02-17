@@ -26,33 +26,33 @@ router.get('/atp/singles', function (req, res) {
     const $ = cheerio.load(response.data);
 
     // Scraping rankings
-    $('.mega-table tbody tr .rank-cell').each((i, element) => {
-      rankings.push($(element).text().trim());
+    $('.mega-table tbody tr .rank-cell').each((i, td) => {
+      rankings.push($(td).text().trim());
     });
 
     // Scraping countries
-    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, element) => {
-      countries.push($(element).attr('alt'));
+    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, img) => {
+      countries.push($(img).attr('alt'));
     });
 
     // Scraping names
-    $('.mega-table tbody tr .player-cell').each((i, element) => {
-      players.push($(element).text().trim());
+    $('.mega-table tbody tr .player-cell').each((i, td) => {
+      players.push($(td).text().trim());
     });
 
     // Scraping ages
-    $('.mega-table tbody tr .age-cell').each((i, element) => {
-      ages.push($(element).text().trim());
+    $('.mega-table tbody tr .age-cell').each((i, td) => {
+      ages.push($(td).text().trim());
     });
 
     // Scraping points
-    $('.mega-table tbody tr .points-cell').each((i, element) => {
-      points.push($(element).text().trim());
+    $('.mega-table tbody tr .points-cell').each((i, td) => {
+      points.push($(td).text().trim());
     });
 
     // Scraping tournaments played
-    $('.mega-table tbody tr .tourn-cell').each((i, element) => {
-      tournaments.push($(element).text().trim());
+    $('.mega-table tbody tr .tourn-cell').each((i, td) => {
+      tournaments.push($(td).text().trim());
     });
 
     for (let i = 0; i < rankings.length; i++){
@@ -66,7 +66,8 @@ router.get('/atp/singles', function (req, res) {
       })
     }
 
-    res.json(JSONResponse);
+    res.json(response.data)
+    // res.json(JSONResponse);
   });
 });
 
@@ -85,33 +86,33 @@ router.get('/atp/race-to-london', function (req, res) {
     const $ = cheerio.load(response.data);
 
     // Scraping rankings
-    $('.mega-table tbody tr .rank-cell').each((i, element) => {
-      rankings.push($(element).text().trim());
+    $('.mega-table tbody tr .rank-cell').each((i, td) => {
+      rankings.push($(td).text().trim());
     });
 
     // Scraping countries
-    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, element) => {
-      countries.push($(element).attr('alt'));
+    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, img) => {
+      countries.push($(img).attr('alt'));
     });
 
     // Scraping names
-    $('.mega-table tbody tr .player-cell').each((i, element) => {
-      players.push($(element).text().trim());
+    $('.mega-table tbody tr .player-cell').each((i, td) => {
+      players.push($(td).text().trim());
     });
 
     // Scraping ages
-    $('.mega-table tbody tr .age-cell').each((i, element) => {
-      ages.push($(element).text().trim());
+    $('.mega-table tbody tr .age-cell').each((i, td) => {
+      ages.push($(td).text().trim());
     });
 
     // Scraping points
-    $('.mega-table tbody tr .points-cell').each((i, element) => {
-      points.push($(element).text().trim());
+    $('.mega-table tbody tr .points-cell').each((i, td) => {
+      points.push($(td).text().trim());
     });
 
     // Scraping tournaments played
-    $('.mega-table tbody tr .tourn-cell').each((i, element) => {
-      tournaments.push($(element).text().trim());
+    $('.mega-table tbody tr .tourn-cell').each((i, td) => {
+      tournaments.push($(td).text().trim());
     });
 
     for (let i = 0; i < rankings.length; i++){
@@ -144,33 +145,33 @@ router.get('/atp/race-to-milan', function (req, res) {
     const $ = cheerio.load(response.data);
 
     // Scraping rankings
-    $('.mega-table tbody tr .rank-cell').each((i, element) => {
-      rankings.push($(element).text().trim());
+    $('.mega-table tbody tr .rank-cell').each((i, td) => {
+      rankings.push($(td).text().trim());
     });
 
     // Scraping countries
-    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, element) => {
-      countries.push($(element).attr('alt'));
+    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, img) => {
+      countries.push($(img).attr('alt'));
     });
 
     // Scraping names
-    $('.mega-table tbody tr .player-cell').each((i, element) => {
-      players.push($(element).text().trim());
+    $('.mega-table tbody tr .player-cell').each((i, td) => {
+      players.push($(td).text().trim());
     });
 
     // Scraping ages
-    $('.mega-table tbody tr .age-cell').each((i, element) => {
-      ages.push($(element).text().trim());
+    $('.mega-table tbody tr .age-cell').each((i, td) => {
+      ages.push($(td).text().trim());
     });
 
     // Scraping points
-    $('.mega-table tbody tr .points-cell').each((i, element) => {
-      points.push($(element).text().trim());
+    $('.mega-table tbody tr .points-cell').each((i, td) => {
+      points.push($(td).text().trim());
     });
 
     // Scraping tournaments played
-    $('.mega-table tbody tr .tourn-cell').each((i, element) => {
-      tournaments.push($(element).text().trim());
+    $('.mega-table tbody tr .tourn-cell').each((i, td) => {
+      tournaments.push($(td).text().trim());
     });
 
     for (let i = 0; i < rankings.length; i++){
@@ -203,33 +204,33 @@ router.get('/atp/doubles', function (req, res) {
     const $ = cheerio.load(response.data);
 
     // Scraping rankings
-    $('.mega-table tbody tr .rank-cell').each((i, element) => {
-      rankings.push($(element).text().trim());
+    $('.mega-table tbody tr .rank-cell').each((i, td) => {
+      rankings.push($(td).text().trim());
     });
 
     // Scraping countries
-    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, element) => {
-      countries.push($(element).attr('alt'));
+    $('.mega-table tbody tr .country-cell .country-inner .country-item img').each((i, img) => {
+      countries.push($(img).attr('alt'));
     });
 
     // Scraping names
-    $('.mega-table tbody tr .player-cell').each((i, element) => {
-      players.push($(element).text().trim());
+    $('.mega-table tbody tr .player-cell').each((i, td) => {
+      players.push($(td).text().trim());
     });
 
     // Scraping ages
-    $('.mega-table tbody tr .age-cell').each((i, element) => {
-      ages.push($(element).text().trim());
+    $('.mega-table tbody tr .age-cell').each((i, td) => {
+      ages.push($(td).text().trim());
     });
 
     // Scraping points
-    $('.mega-table tbody tr .points-cell').each((i, element) => {
-      points.push($(element).text().trim());
+    $('.mega-table tbody tr .points-cell').each((i, td) => {
+      points.push($(td).text().trim());
     });
 
     // Scraping tournaments played
-    $('.mega-table tbody tr .tourn-cell').each((i, element) => {
-      tournaments.push($(element).text().trim());
+    $('.mega-table tbody tr .tourn-cell').each((i, td) => {
+      tournaments.push($(td).text().trim());
     });
 
     // console.log(names)
@@ -251,7 +252,12 @@ router.get('/atp/doubles', function (req, res) {
 
 // WTA singles rankings API response
 router.get('/wta/singles', function (req, res) {
-
+  axios.get(WTA_RANKINGS_URL).then((response) => {
+    const $ = cheerio.load(response.data)
+    console.log(response.data)
+    // console.log($('.dp-link').text())
+    res.json({status: 'wta singles!'})
+  });
 });
 
 // WTA doubles rankings API response
