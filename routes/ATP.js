@@ -72,10 +72,12 @@ router.get('/rankings/singles', (req, res) => {
         id: playerId,
         ranking: ranking,
         points: points,
-        player: player,
-        age: age,
+        playerName: player,
         country: country,
-        date: currentRankDate,
+        rankedAt: currentRankDate,
+        metadata: {
+          age: age,
+        }
       });
     });
 
