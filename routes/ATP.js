@@ -1,6 +1,9 @@
-const router = require('express').Router();
+const express = require('express');
+const puppeteer = require('puppeteer');
 const axios  = require('axios');
 const cheerio = require('cheerio');
+
+const router = express.Router();
 
 // ATP URLS
 const ATP_SINGLES_URL = 'https://www.atptour.com/en/rankings/singles';
@@ -18,20 +21,45 @@ const SERVICE_GAMES_WON_URL = 'https://www.atptour.com/en/stats/service-games-wo
 // ATP singles rankings API response
 router.get('/rankings/singles', (req, res) => {
 
+  var playerIds = [];
   let rankings = [];
   let countries = [];
   let players = [];
   let ages = [];
   let points = [];
-  let tournaments = [];
   let JSONResponse = [];
 
-  axios.get(ATP_SINGLES_URL).then((response) => {
-    const $ = cheerio.load(response.data);
+  async function scrapeATPRankings() {
+    const browser = await puppeteer.launch({headless: "new"});
+    const page = await browser.newPage();
+    await page.goto('https://www.atptour.com/en/rankings/singles?rankRange=1-1500', {
+      waitUntil: "domcontentloaded",
+    });
 
-    // Scraping rankings
+    await page.waitForSelector('.mega-table');
+  
+    // Get the page content
+    const content = await page.content();
+  
+    // Load content in cheerio
+    const $ = cheerio.load(content);
+
+    let currentRankDate = $('ul[data-value="rankDate"] li').first().text().trim();
+
+    currentRankDate = currentRankDate.replace(/\./g, "-");
+
+    // Scraping player ids
+    $('.mega-table tbody tr .player-cell a').each((i, a) => {
+      let href = $(a).attr('href');
+      let id = href.split('/')[4];
+      playerIds.push(id);
+    });
+
+    // Scraping Ranks
     $('.mega-table tbody tr .rank-cell').each((i, td) => {
-      rankings.push($(td).text().trim());
+      const rankString = $(td).text().trim();
+      const onlyNumbers = rankString.replace(/\D/g, '');
+      rankings.push(parseInt(onlyNumbers, 10));
     });
 
     // Scraping countries
@@ -46,32 +74,33 @@ router.get('/rankings/singles', (req, res) => {
 
     // Scraping ages
     $('.mega-table tbody tr .age-cell').each((i, td) => {
-      ages.push($(td).text().trim());
+      ages.push(parseInt($(td).text().trim(), 10));
     });
 
     // Scraping points
     $('.mega-table tbody tr .points-cell').each((i, td) => {
-      points.push($(td).text().trim());
-    });
-
-    // Scraping tournaments played
-    $('.mega-table tbody tr .tourn-cell').each((i, td) => {
-      tournaments.push($(td).text().trim());
+      const rankPointsString = $(td).text().trim();
+      points.push(parseInt(rankPointsString.replace(",", ""), 10));
     });
 
     for (let i = 0; i < rankings.length; i++){
       JSONResponse.push({
+        "id": playerIds[i],
         "ranking": rankings[i],
-        "country": countries[i],
+        "points": points[i],
         "player": players[i],
         "age": ages[i],
-        "points": points[i],
-        "tournaments_played": tournaments[i]
+        "country": countries[i],
+        "date": currentRankDate,
       })
     }
-
+  
+    await browser.close();
+  
     res.json(JSONResponse);
-  });
+  }
+  
+  scrapeATPRankings().catch(console.error);
 });
 
 // ATP Race to London API response
