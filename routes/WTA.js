@@ -1,9 +1,11 @@
-const router = require('express').Router();
+const express = require('express');
 const axios  = require('axios');
 const cheerio = require('cheerio');
 
+const router = express.Router();
+
 // URLS
-const WTA_RANKINGS_URL = 'https://www.wtatennis.com/rankings';
+const WTA_RANKINGS_URL = 'https://api.wtatennis.com/tennis/players/ranked?pageSize=100&type=rankSingles&sort=asc&metric=SINGLES';
 
 /* WTA RANKINGS */
 const WTA_PLAYER_INDEX_URL = 'https://www.wtatennis.com/players';
@@ -11,11 +13,30 @@ const WTA_COACHES_URL = 'https://www.wtatennis.com/coaches';
 
 // WTA singles rankings API response
 router.get('/rankings/singles', (req, res) => {
-  axios.get(WTA_RANKINGS_URL).then((response) => {
-    const $ = cheerio.load(response.data)
-    console.log(response.data)
-    // console.log($('.dp-link').text())
-    res.json({status: 'wta singles!'})
+  const pageQueryParam = req.query?.page ?? 1;
+  const page = Math.max(1, pageQueryParam) - 1;
+  
+  axios.get(`${WTA_RANKINGS_URL}&page=${page}`).then((response) => {
+    const players = response.data;
+    const normalizedPlayers = players.map((playerObj) => {
+      let date = new Date(playerObj.rankedAt);
+      let formattedDate = date.toISOString().split('T')[0];
+      return {
+        id: playerObj.player.id,
+        ranking: playerObj.ranking,
+        points: playerObj.points,
+        playerName: playerObj.player.fullName,
+        country: playerObj.player.countryCode,
+        rankedAt: formattedDate,
+        metadata: {
+          firstName: playerObj.player.firstName,
+          lastName: playerObj.player.lastName,
+          dob: playerObj.player.dateOfBirth,
+        }
+      };
+    });
+
+    res.json(normalizedPlayers)
   });
 });
 
